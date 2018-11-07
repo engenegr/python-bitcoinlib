@@ -676,7 +676,7 @@ class Proxy(BaseProxy):
         FIXME: implement options
         """
         hextx = hexlify(tx.serialize())
-        r = self._call('signrawtransaction', hextx, *args)
+        r = self._call('signrawtransactionwithwallet', hextx, *args)
         r['tx'] = CTransaction.deserialize(unhexlify(r['hex']))
         del r['hex']
         return r
@@ -698,8 +698,8 @@ class Proxy(BaseProxy):
         r = self._call('validateaddress', str(address))
         if r['isvalid']:
             r['address'] = CBitcoinAddress(r['address'])
-        if 'pubkey' in r:
-            r['pubkey'] = unhexlify(r['pubkey'])
+        if 'scriptPubKey' in r:
+            r['scriptPubKey'] = unhexlify(r['scriptPubKey'])
         return r
 
     def unlockwallet(self, password, timeout=60):
