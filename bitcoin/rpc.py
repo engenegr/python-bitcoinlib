@@ -472,7 +472,7 @@ class Proxy(BaseProxy):
 
     def getinfo(self):
         """Return a JSON object containing various state info"""
-        r = self._call('getinfo')
+        r = self._call('getwalletinfo')
         if 'balance' in r:
             r['balance'] = int(r['balance'] * COIN)
         if 'paytxfee' in r:
@@ -673,7 +673,7 @@ class Proxy(BaseProxy):
     def signrawtransaction(self, tx, *args):
         """Sign inputs for transaction
 
-        FIXME: implement options
+        FIXME: implement options signrawtransactionwithkey and signrawtransactionwithwallet
         """
         hextx = hexlify(tx.serialize())
         r = self._call('signrawtransactionwithwallet', hextx, *args)
