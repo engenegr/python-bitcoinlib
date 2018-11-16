@@ -472,7 +472,7 @@ class Proxy(BaseProxy):
 
     def getinfo(self):
         """Return a JSON object containing various state info"""
-        r = self._call('getinfo')
+        r = self._call('getwalletinfo')
         if 'balance' in r:
             r['balance'] = int(r['balance'] * COIN)
         if 'paytxfee' in r:
@@ -673,10 +673,10 @@ class Proxy(BaseProxy):
     def signrawtransaction(self, tx, *args):
         """Sign inputs for transaction
 
-        FIXME: implement options
+        FIXME: implement options signrawtransactionwithkey and signrawtransactionwithwallet
         """
         hextx = hexlify(tx.serialize())
-        r = self._call('signrawtransaction', hextx, *args)
+        r = self._call('signrawtransactionwithwallet', hextx, *args)
         r['tx'] = CTransaction.deserialize(unhexlify(r['hex']))
         del r['hex']
         return r
@@ -698,8 +698,8 @@ class Proxy(BaseProxy):
         r = self._call('validateaddress', str(address))
         if r['isvalid']:
             r['address'] = CBitcoinAddress(r['address'])
-        if 'pubkey' in r:
-            r['pubkey'] = unhexlify(r['pubkey'])
+        if 'scriptPubKey' in r:
+            r['scriptPubKey'] = unhexlify(r['scriptPubKey'])
         return r
 
     def unlockwallet(self, password, timeout=60):

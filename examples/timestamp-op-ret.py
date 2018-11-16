@@ -53,7 +53,7 @@ for digest in digests:
     value_in = unspent[-1]['amount']
 
     change_addr = proxy.getnewaddress()
-    change_pubkey = proxy.validateaddress(change_addr)['pubkey']
+    change_pubkey = proxy.validateaddress(change_addr)['scriptPubKey']
     change_out = CMutableTxOut(params.MAX_MONEY, CScript([change_pubkey, OP_CHECKSIG]))
 
     digest_outs = [CMutableTxOut(0, CScript([OP_RETURN, digest]))]
